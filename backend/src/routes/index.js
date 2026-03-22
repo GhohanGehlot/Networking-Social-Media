@@ -5,6 +5,6 @@ import groupRoute from "./group.route.js";
 const route = express.Router();
 
 route.use("/auth" , authRoute);
-route.use("/group" , groupRoute )
+route.use("/group" , groupRoute );
 
 export default route;
