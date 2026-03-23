@@ -7,21 +7,21 @@ const groupRoute = express.Router();
 
 //POST request
 
-groupRoute.post('/group/create', authorisedUser, createGroup );
-groupRoute.post('/group/:id/join' , authorisedUser , joinGroup);
-groupRoute.post('/group/:id/leave' , authorisedUser , leaveGroup);
+groupRoute.post('/create', authorisedUser, createGroup );
+groupRoute.post('/:id/join' , authorisedUser , joinGroup);
+groupRoute.post('/:id/leave' , authorisedUser , leaveGroup);
 
 
 //GET request
-groupRoute.get('/group/search' , authorisedUser , SearchGroup);
-groupRoute.get('/group/my-groups' , authorisedUser , MyGroup);
-groupRoute.get('/group/:id' , authorisedUser , ViewGroup);
+groupRoute.get('/search' , authorisedUser , SearchGroup);
+groupRoute.get('/my-groups' , authorisedUser , MyGroup);
+groupRoute.get('/:id' , authorisedUser , ViewGroup);
 
 
 
 //DELETE only by Host
 
-groupRoute.delete('/group/:id' , authorisedUser, hostVerification , DeleteGroup);
+groupRoute.delete('/:id' , authorisedUser, hostVerification , DeleteGroup);
 
 
 

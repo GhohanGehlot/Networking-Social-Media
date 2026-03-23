@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const groupSchema = mongoose.Schema({
+const groupSchema = new mongoose.Schema({
     name: {
         type: String,
         required : [true , "Please add the name of group"],
@@ -31,17 +31,23 @@ const groupSchema = mongoose.Schema({
         unique : true
     },
 
+    category : {
+        type : String,
+        enum: ['Finance', 'AI', 'Tech', 'Health', 'Education', 'Business', 'Fun' , 'Other'],
+        required : [true , "Please select the category"]
+
+    }
+
 } , {
     timestamps : true
 })
 
 
 
-groupSchema.pre('save' , function (next) {
+groupSchema.pre('save' , async function ( ) {
     if(!this.tag){
         this.tag = '#' + Math.floor(10000000 + Math.random() * 90000000);
     }
-    next();
 })
 
-export const groupModel = mongoose.model("Group" , groupSchema);
+export const GroupModel = mongoose.model("Group" , groupSchema);

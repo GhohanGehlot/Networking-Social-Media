@@ -5,7 +5,7 @@ import { UserModel } from "../models/user.model.js";
 export const authorisedUser = async (req , res , next) => {
     try {
         const {token} = req.cookies;
-
+       
         if(!token){
             return res.json({
                 success : false,
@@ -19,8 +19,9 @@ export const authorisedUser = async (req , res , next) => {
        const user = await UserModel.findById(userId);
 
        req.user = user;
-        next()
+       next()
     } catch (error) {
+        onsole.log('authorised next type:', typeof next)
         next(error)
     }
 }

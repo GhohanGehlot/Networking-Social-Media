@@ -8,7 +8,7 @@ import { generateToken } from "../utils/generateToken.js";
 export const registerUser = async (req , res , next) => {
     try {
         
-        const {name , email , password} = req.body;
+        const {username , email , password} = req.body;
 
         const user = await UserModel.findOne({email});
 
@@ -32,7 +32,7 @@ export const registerUser = async (req , res , next) => {
       
 
         const newUser = new UserModel({
-            name,
+            username,
             email,
             password : hashPassword,
         });
