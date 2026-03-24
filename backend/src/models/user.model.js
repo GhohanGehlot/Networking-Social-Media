@@ -17,11 +17,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required : [ true , "Please provide your password"],
         validate: [validate.isStrongPassword , "Please set a strong password"]
-    },
-    groups: [{
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'Group'
-    }]
+    }
 
 }, {
     timestamps : true

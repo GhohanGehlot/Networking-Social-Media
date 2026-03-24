@@ -7,19 +7,18 @@ export const createGroup = async ( req , res , next ) => {
 
     try {
         
-
         const { name , description , numberOfMembers , category  } = req.body;
-        const { id } = req.user;
+        const { _id } = req.user;
     
         //host as a first member
-        let members = [id];
+        let members = [_id];
     
         const newGroup = new GroupModel({
             name,
             description,
             numberOfMembers,
             category,
-            host : id,
+            host : _id,
             members,
         })
     
@@ -42,7 +41,7 @@ export const createGroup = async ( req , res , next ) => {
 export const joinGroup = async (req , res , next) => {
     try {
         const {id : groupId} = req.params;
-        const { id } = req.user;
+        const { _id } = req.user;
 
         const group = await GroupModel.findById(groupId);
 
@@ -56,14 +55,14 @@ export const joinGroup = async (req , res , next) => {
             })
         }
 
-        if(members.includes(id)){
+        if(members.includes(_id)){
             return res.json({
                 success : false,
                 message: "User is already in the group"
             })
         }
 
-        members.push(id);
+        members.push(_id);
 
         await group.save();
         
@@ -83,7 +82,7 @@ export const joinGroup = async (req , res , next) => {
 export const leaveGroup = async (req , res , next) => {
     try {
         const {id : groupId} = req.params;
-        const { id } = req.user;
+        const { _id } = req.user;
 
         const group = await GroupModel.findById(groupId);
 
@@ -96,14 +95,14 @@ export const leaveGroup = async (req , res , next) => {
             })
         }
 
-        if(!members.includes(id)){
+        if(!members.includes(_id)){
             return res.json({
                 success : false,
                 message: 'User is not a member of group'
             })
         }
 
-        members.filter(memberId => memberId.toString() !== id.toString());
+        members.filter(memberId => memberId.toString() !== _id.toString());
 
         await group.save();
         
@@ -120,22 +119,82 @@ export const leaveGroup = async (req , res , next) => {
 
 
 //GET controller
- export const SearchGroup = async (req , res , next) => {
+ export const searchGroup = async (req , res , next) => {
+
+ try {
+       const {name} = req.query;
+       const groups = await GroupModel.find({ name : { $regex : name , $options : 'i'}});
+
+       return res.json({
+        success : true,
+        message : "group searched",
+        groups
+       })
+
+
+ } catch (error) {
+    next(error);
+ }
+
+    
+    
+    
     
 }
 
 export const ViewGroup = async (req , res , next) => {
-    
+ try {
+       const { id: groupId } = req.params;
+
+       const group = await GroupModel.findById(groupId);
+
+       return res.json({
+        success : true,
+        message : "Group viewed",
+        group
+       })
+
+ } catch (error) {
+    next(error);
+ }
+
 }
 
 
 export const MyGroup = async (req , res , next) => {
+   try {
     
+     const { _id } = req.user;
+ 
+     const groups = await GroupModel.find({ members : _id });
+ 
+     return res.json({
+         success : true,
+         message : "My groups data fetched successfully",
+         groups,
+     })
+   } catch (error) {
+    next(error)
+   }
+
 }
 
 
 //DELETE controller
 
 export const DeleteGroup = async (req , res , next) => {
-    
+    try {
+        const {id : groupId} = req.params;
+
+         await GroupModel.deleteOne({ _id : groupId});
+
+        res.json({
+            success : true,
+            message : "Group got deleted"
+        })
+
+        
+    } catch (error) {
+       next(error) 
+    }
 }
