@@ -7,7 +7,7 @@ const Register = () => {
 
     const navigate = useNavigate();
 
-       const [name , setName] = useState('');
+       const [username , setUserName] = useState('');
        const [email , setEmail] = useState('');
        const [password , setPassword] = useState('');
 
@@ -15,10 +15,10 @@ const Register = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('/auth/register' , {name , email , password});
+            const response = await axios.post('/auth/register' , {username , email , password});
             console.log(response.data)
             if(response.data.success){
-                navigate('/home')
+                navigate('/')
             }
         } catch (error) {
             console.log(error.message);
@@ -40,8 +40,8 @@ const Register = () => {
             type="text" 
             placeholder="Ghohan Gehlot" 
             className="h-10 px-3 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-900 outline-none focus:border-gray-400" 
-            onChange={(e) => setName(e.target.value)}
-            value={name}
+            onChange={(e) => setUserName(e.target.value)}
+            value={username}
             />
           </div>
 
