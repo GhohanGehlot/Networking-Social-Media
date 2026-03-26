@@ -1,32 +1,31 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
-import axios from '../utils/axiosInstance';
+import useAuth from '../store/useAuthStore';
 
 const Login = () => {
 
     const navigate = useNavigate();
+    const loginToken = useAuth(state => state.login);
+    const fetchUser = useAuth(state => state.fetchUser);
 
     const [email , setEmail] = useState('');
     const [password , setPassword] = useState('');
+
 
    async function onSubmitHandler  (e){
         e.preventDefault();
 
        try {
-        const response =await axios.post("/auth/login" , {email , password});
-        if(response.data.success){
-            navigate("/")
-        }
-
-
+        await loginToken(email , password)
+        await fetchUser()
        } catch (error) {
         console.log(error.message)
        }
     }
 
   return (
-    <form onSubmit={onSubmitHandler} className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <form onSubmit={onSubmitHandler} className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="bg-white border border-gray-200 rounded-2xl p-10 w-full max-w-md">
         <h1 className="text-2xl font-bold text-gray-900 mb-1">NetSocio</h1>
         <p className="text-sm text-gray-400 mb-8">Welcome back, sign in to continue</p>
@@ -64,6 +63,8 @@ const Login = () => {
         </p>
       </div>
     </form>
+    
+    
   )
 }
 

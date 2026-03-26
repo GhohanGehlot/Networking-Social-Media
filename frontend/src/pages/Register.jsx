@@ -1,11 +1,16 @@
 import React from 'react'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../utils/axiosInstance';
+import useAuth from '../store/useAuthStore';
 
 const Register = () => {
 
     const navigate = useNavigate();
+
+    const registerToken = useAuth(state => state.register);
+    const fetchUser = useAuth(state => state.fetchUser);
+
+
 
        const [username , setUserName] = useState('');
        const [email , setEmail] = useState('');
@@ -15,11 +20,8 @@ const Register = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('/auth/register' , {username , email , password});
-            console.log(response.data)
-            if(response.data.success){
-                navigate('/')
-            }
+          await registerToken(username ,email , password)
+          await fetchUser()
         } catch (error) {
             console.log(error.message);
         }

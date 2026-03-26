@@ -100,3 +100,15 @@ export const loginUser = async (req , res , next) => {
     }
 }
 
+
+export const logoutUser = async (req , res , next) => {
+    try {
+        res.clearCookie('token');
+
+        res.json({
+            success : true
+        })
+    } catch (error) {
+        next(error)
+    }
+}

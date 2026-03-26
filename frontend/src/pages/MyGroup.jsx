@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Sidebar from '../components/SideBar';
 import GroupCard from '../components/GroupCard';
 import { useState } from 'react';
 import axios from '../utils/axiosInstance';
 
 const MyGroups = () => {
-
 
   const [showModal , setShowModal] = useState(false);
   const [name , setName] = useState('');
@@ -14,18 +13,18 @@ const MyGroups = () => {
   const [numberOfMembers , setnumberOfMembers] = useState('');
 
 
+
  async function onSubmitHandler(e){
     e.preventDefault();
     
     try {
       const response = await axios.post("/group/create" , {name , description , category , numberOfMembers});
-      console.log(name , numberOfMembers)
-      console.log(response.data)
     } catch (error) {
       console.log(error.message)
     }
 
   }
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />

@@ -21,7 +21,7 @@ export const authorisedUser = async (req , res , next) => {
        req.user = user;
        next()
     } catch (error) {
-        onsole.log('authorised next type:', typeof next)
+        console.log('authorised next type:', typeof next)
         next(error)
     }
 }

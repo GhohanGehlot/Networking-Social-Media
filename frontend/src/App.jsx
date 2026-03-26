@@ -1,18 +1,39 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router , Routes , Route } from 'react-router-dom'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import MyGroup from './pages/MyGroup'
+import useAuth from './store/useAuthStore'
+import PrivateRoutes from './components/PrivateRoutes'
+import PublicRoutes from './components/PublicRoutes'
 
 const App = () => {
+
+  const fetchUser = useAuth(state => state.fetchUser);
+  const user = useAuth(state => state.user)
+
+
+  useEffect(() => {    
+       fetchUser();
+       
+  }, [])
+
+
   return (
     <Router>
       <Routes>
-         <Route path='/' element={<MyGroup/>} />
-         <Route path='/profile' element={<Profile/>} />
-         <Route path='/register' element={<Register/>} />
-         <Route path='/login' element={<Login/>} />
+        <Route element={<PrivateRoutes/>}>
+              <Route path='/' element={<MyGroup/>} />
+            <Route path='/profile' element={<Profile/>} />     
+        </Route>
+
+        <Route element={<PublicRoutes/>}>
+            <Route path='/login' element={<Login/>} />
+            <Route path='/register' element={<Register/>} />
+        </Route>
+        
+         
       </Routes>
     </Router>
   )
