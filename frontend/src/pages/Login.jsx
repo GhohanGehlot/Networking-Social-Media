@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../store/useAuthStore';
+import { toast } from 'react-toastify';
 
 const Login = () => {
 
@@ -18,9 +19,9 @@ const Login = () => {
 
        try {
         await loginToken(email , password)
-        await fetchUser()
+        await fetchUser();
        } catch (error) {
-        console.log(error.message)
+         toast.error(error.message)
        }
     }
 

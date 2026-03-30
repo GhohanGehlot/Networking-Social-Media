@@ -3,6 +3,8 @@ import Sidebar from '../components/SideBar';
 import GroupCard from '../components/GroupCard';
 import { useState } from 'react';
 import axios from '../utils/axiosInstance';
+import { toast } from 'react-toastify';
+import useGroup from '../store/useGroupStore';
 
 const MyGroups = () => {
 
@@ -13,14 +15,23 @@ const MyGroups = () => {
   const [numberOfMembers , setnumberOfMembers] = useState('');
 
 
+  const groups = useGroup(state => state.groups);
+  
 
  async function onSubmitHandler(e){
     e.preventDefault();
     
     try {
+      
       const response = await axios.post("/group/create" , {name , description , category , numberOfMembers});
+      setShowModal(false);
+      setName("");
+      setDescription("");
+      setCategory("");
+      setnumberOfMembers("");
+      toast.success(response.data.message);
     } catch (error) {
-      console.log(error.message)
+      toast.error("Something went wrong")
     }
 
   }
@@ -40,7 +51,9 @@ const MyGroups = () => {
   </button>
       </div>
         </div>
+
         <GroupCard/>
+      
 
    {
     showModal && (
@@ -81,7 +94,7 @@ const MyGroups = () => {
           <input onChange={(e) => setnumberOfMembers(e.target.value)} value={numberOfMembers} type="number" min={5} max={100} placeholder="e.g. 20" className="h-10 px-3 rounded-lg border border-gray-200 bg-gray-50 text-sm outline-none focus:border-gray-400" />
         </div>
 
-        <button type='submit' className="mt-2 h-10 bg-gray-900 text-white text-sm font-medium rounded-lg">
+        <button type='submit'  className="mt-2 h-10 bg-gray-900 text-white text-sm font-medium rounded-lg">
           Create Group
         </button>
       </div> 

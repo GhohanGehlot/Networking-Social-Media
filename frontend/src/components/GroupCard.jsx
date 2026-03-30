@@ -1,6 +1,20 @@
+import { useEffect } from "react";
+import useGroup from "../store/useGroupStore";
+
+
+
+
 const GroupCard = () => {
 
-    const groups = [{ _id : 1 ,name : "CFA Elites" , tag : "#10928383" , category : "Finance"  } , { _id: 2 ,name : "ChatGpt Warrior" , tag : "#10928313" , category : "AI"  }  ]
+
+  const groups = useGroup(state => state.groups);
+
+  const myGroup = useGroup(state => state.myGroup);
+
+    useEffect(() => {
+      myGroup()
+      console.log(groups);
+    }, [groups])
 
   return (
      <div className="flex flex-col gap-3">
@@ -19,7 +33,7 @@ const GroupCard = () => {
 
       {/* Right — member count */}
       <div className="flex flex-col items-end gap-1">
-        <span className="text-sm font-bold text-gray-900">8<span className="text-gray-300 font-normal">/10</span></span>
+        <span className="text-sm font-bold text-gray-900">{group.members.length}<span className="text-gray-300 font-normal">/{group.numberOfMembers}</span></span>
         <span className="text-xs text-gray-400">members</span>
       </div>
 

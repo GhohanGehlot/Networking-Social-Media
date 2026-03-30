@@ -7,6 +7,8 @@ import MyGroup from './pages/MyGroup'
 import useAuth from './store/useAuthStore'
 import PrivateRoutes from './components/PrivateRoutes'
 import PublicRoutes from './components/PublicRoutes'
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const App = () => {
 
@@ -31,10 +33,9 @@ const App = () => {
         <Route element={<PublicRoutes/>}>
             <Route path='/login' element={<Login/>} />
             <Route path='/register' element={<Register/>} />
-        </Route>
-        
-         
+        </Route> 
       </Routes>
+      <ToastContainer/>
     </Router>
   )
 }
