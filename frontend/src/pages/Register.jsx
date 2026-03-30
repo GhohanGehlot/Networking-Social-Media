@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../store/useAuthStore';
 import { toast } from 'react-toastify';
+import { Riple } from 'react-loading-indicators';
 
 const Register = () => {
 
@@ -16,22 +17,30 @@ const Register = () => {
        const [username , setUserName] = useState('');
        const [email , setEmail] = useState('');
        const [password , setPassword] = useState('');
+       const [isLoading , setIsLoading] = useState(false);
 
        async function onSubmitHandler(e) {
         e.preventDefault();
-
+           setIsLoading(true)
         try {
           await registerToken(username ,email , password)
           await fetchUser()
+         
         } catch (error) {
           toast.error(error.message);
-        }
+        }finally{
+        setIsLoading(false)
+       }
        }
        
 
 
   return (
-    <form onSubmit={onSubmitHandler} className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <>
+      {
+        isLoading ?
+        <Riple color="#0000" size="medium" text="" textColor="" /> :
+        <form onSubmit={onSubmitHandler} className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="bg-white border border-gray-200 rounded-2xl p-10 w-full max-w-md">
         <h1 className="text-2xl font-bold text-gray-900 mb-1">NetSocio</h1>
         <p className="text-sm text-gray-400 mb-8">Create your account to get started</p>
@@ -80,6 +89,9 @@ const Register = () => {
         </p>
       </div>
     </form>
+      }
+    </>
+    
   )
 }
 

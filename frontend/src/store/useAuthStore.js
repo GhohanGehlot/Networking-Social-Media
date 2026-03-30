@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 const useAuth = create(persist((set) =>( {
     user : null,
     token : null,
-    isLoading : true,
+    Loading : true,
 
     login: async (email , password) => {
         const response = await axios.post('/auth/login', { email, password });
@@ -39,15 +39,15 @@ const useAuth = create(persist((set) =>( {
             const response = await axios.get('/user/profile');
             if(!response.data.success) throw new Error(response.data.message);
             set({
-                user : response.data.user , token : response.data.token , isLoading : false
+                user : response.data.user , token : response.data.token , Loading : false
             })
         } catch (error) {
-             set({ user: null, token : null , isLoading: false })
+             set({ user: null, token : null , Loading: false })
         }
     }
 }), {
     name : 'auth-storage',
-    partialize : (state) =>( { user : state.user , isLoading : false })
+    partialize : (state) =>( { user : state.user})
 }))
 
 

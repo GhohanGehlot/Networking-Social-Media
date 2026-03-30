@@ -5,6 +5,7 @@ import { useState } from 'react';
 import axios from '../utils/axiosInstance';
 import { toast } from 'react-toastify';
 import useGroup from '../store/useGroupStore';
+import { Riple } from 'react-loading-indicators';
 
 const MyGroups = () => {
 
@@ -13,14 +14,14 @@ const MyGroups = () => {
   const [description , setDescription] = useState('');
   const [category , setCategory] = useState('');
   const [numberOfMembers , setnumberOfMembers] = useState('');
+  const [isLoading , setIsLoading] = useState(false);
 
 
-  const groups = useGroup(state => state.groups);
-  
+
 
  async function onSubmitHandler(e){
     e.preventDefault();
-    
+     setIsLoading(true)
     try {
       
       const response = await axios.post("/group/create" , {name , description , category , numberOfMembers});
@@ -32,12 +33,18 @@ const MyGroups = () => {
       toast.success(response.data.message);
     } catch (error) {
       toast.error("Something went wrong")
-    }
+    }finally{
+        setIsLoading(false)
+       }
 
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+   <>
+   {
+    isLoading ? 
+    <Riple color="#ff000000" size="medium" text="" textColor="" />  :
+     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
       <main className="ml-56 flex-1 p-8">
       <div className='flex items-center justify-between mb-6'>
@@ -104,6 +111,8 @@ const MyGroups = () => {
         }
       </main>
     </div>
+   }
+   </>
   )
 }
 
