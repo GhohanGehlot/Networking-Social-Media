@@ -8,6 +8,7 @@ import useAuth from './store/useAuthStore'
 import PrivateRoutes from './components/PrivateRoutes'
 import PublicRoutes from './components/PublicRoutes'
 import { ToastContainer, toast } from 'react-toastify';
+import GroupChat from './pages/GroupChat'
 
 
 const App = () => {
@@ -26,8 +27,9 @@ const App = () => {
     <Router>
       <Routes>
         <Route element={<PrivateRoutes/>}>
-              <Route path='/' element={<MyGroup/>} />
-            <Route path='/profile' element={<Profile/>} />     
+            <Route path='/' element={<MyGroup/>} />
+            <Route path='/profile' element={<Profile/>} />    
+            <Route path='/group/:id' element={<GroupChat/>}/> 
         </Route>
 
         <Route element={<PublicRoutes/>}>
