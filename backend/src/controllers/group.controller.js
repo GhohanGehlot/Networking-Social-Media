@@ -55,7 +55,7 @@ export const joinGroup = async (req , res , next) => {
             })
         }
 
-        if(members.includes(_id)){
+        if(members.some(memberId => memberId.toString() === _id.toString())){
             return res.json({
                 success : false,
                 message: "User is already in the group"
@@ -143,7 +143,7 @@ export const ViewGroup = async (req , res , next) => {
  try {
        const { id: groupId } = req.params;
 
-       const group = await GroupModel.findById(groupId);
+       const group = await GroupModel.findById(groupId).populate("members" , "username").populate("host" , "username");
 
        return res.json({
         success : true,
@@ -196,16 +196,20 @@ export const exploreGroup = async (req , res , next) => {
 
 export const DeleteGroup = async (req , res , next) => {
     try {
-        const {id : groupId} = req.params;
-
-         await GroupModel.deleteOne({ _id : groupId});
+        const {id : groupId} = req.params;  
+       const group = await GroupModel.deleteOne({ _id : groupId});
+         
+         
+        if(!group) {
+            return res.json({ success: false, message: 'Group not found' })
+        }
 
         res.json({
             success : true,
             message : "Group got deleted"
+            
         })
 
-        
     } catch (error) {
        next(error) 
     }

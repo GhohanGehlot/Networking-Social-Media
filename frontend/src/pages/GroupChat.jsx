@@ -31,6 +31,9 @@ useEffect(() => {
     navigate('/');
   }
 
+  function groupHeaderHandler(){
+     navigate(`/group/${id}/detail`)
+  }
   if(!currentGroup) return <div>Loading...</div>
 
 
@@ -41,7 +44,7 @@ useEffect(() => {
       <main className="ml-56 flex-1 flex flex-col h-screen">
 
         {/* Header */}
-        <div className="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between">
+        <div onClick={() => groupHeaderHandler()} className="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between">
           <div>
             <h2 className="text-sm font-bold text-gray-900">{currentGroup.name}</h2>
             <p className="text-xs text-gray-400">{currentGroup.members.length}/{currentGroup.numberOfMembers} members</p>

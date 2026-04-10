@@ -10,6 +10,7 @@ import PublicRoutes from './components/PublicRoutes'
 import { ToastContainer, toast } from 'react-toastify';
 import GroupChat from './pages/GroupChat'
 import Explore from './pages/Explore'
+import GroupDetail from './pages/GroupDetail'
 
 
 const App = () => {
@@ -32,6 +33,7 @@ const App = () => {
             <Route path='/profile' element={<Profile/>} />    
             <Route path='/group/:id' element={<GroupChat/>}/> 
             <Route path='/group/explore' element={<Explore/>}/> 
+            <Route path="/group/:id/detail" element={<GroupDetail />} />
         </Route>
 
         <Route element={<PublicRoutes/>}>

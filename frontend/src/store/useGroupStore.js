@@ -15,6 +15,7 @@ const useGroup = create((set) => ({
 
     viewGroup : async (id) => {
         const response = await axios.get(`/group/${id}`);
+        console.log("raw members:", response.data.group.members)
         set({ currentGroup : response.data.group})
     },
 
@@ -32,9 +33,15 @@ const useGroup = create((set) => ({
 
     leaveGroup : async (id) => {
         const response = await axios.post(`/group/${id}/leave`)
-        console.log("leave" ,response.data);
         set((state) => ({
             groups : state.groups.filter(group => group._id !== id)
+        }))
+    },
+
+    deleteGroup : async (id) => {
+        const response = await axios.delete(`/group/${id}`)
+        set((state) => ({
+             groups : state.groups.filter(group => group._id !== id)
         }))
     }
 
