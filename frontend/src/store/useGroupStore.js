@@ -15,14 +15,20 @@ const useGroup = create((set) => ({
 
     viewGroup : async (id) => {
         const response = await axios.get(`/group/${id}`);
-        console.log("view" ,response.data.group);
         set({ currentGroup : response.data.group})
     },
 
     exploreGroup : async () => {
         const response = await axios.get('group/explore');
-        console.log( 'Hi' ,response.data)
         set({ exploreGroups : response.data.groups})
+    },
+
+    joinGroup : async (id) => {
+       const response = await axios.post(`/group/${id}/join`)
+       console.log("join" ,response.data);
+        set((state) => ({
+            groups : [ ...state.groups , response.data.group ]
+        }))
     }
 
 

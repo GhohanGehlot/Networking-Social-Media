@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react'
 import Sidebar from '../components/SideBar'
 import useGroup from '../store/useGroupStore'
+import { useParams } from 'react-router-dom'
 
 const Explore = () => {
   const [search, setSearch] = useState('')
 
   const groups = useGroup(state => state.exploreGroups);
   const exploreGroups = useGroup(state => state.exploreGroup);
-
+  const joinGroup = useGroup(state => state.joinGroup);
 
   useEffect(() => {
     exploreGroups();
   },[])
+
+  async function joinHandler (id){
+   await joinGroup(id)
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -54,7 +59,7 @@ const Explore = () => {
                     </span>
                     <span className="text-xs text-gray-400">members</span>
                   </div>
-                  <button className="text-xs font-medium bg-gray-900 text-white px-3 py-1.5 rounded-lg hover:bg-gray-700 transition-colors">
+                  <button onClick={() => joinHandler(group._id)} className="text-xs font-medium bg-gray-900 text-white px-3 py-1.5 rounded-lg hover:bg-gray-700 transition-colors">
                     Join
                   </button>
                 </div>

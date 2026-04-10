@@ -44,7 +44,7 @@ const useAuth = create(persist((set) =>( {
         } catch (error) {
              set({ user: null, token : null , Loading: false })
         }
-    }
+    },
 }), {
     name : 'auth-storage',
     partialize : (state) =>( { user : state.user})

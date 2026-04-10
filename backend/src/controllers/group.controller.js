@@ -68,7 +68,8 @@ export const joinGroup = async (req , res , next) => {
         
         return res.json({
             success: true,
-            message : "User joined Successfully"
+            message : "User joined Successfully",
+            group
         })
 
 
