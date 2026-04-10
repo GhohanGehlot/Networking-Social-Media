@@ -102,7 +102,7 @@ const GroupDetail = () => {
           <div className="pt-8 border-t border-gray-100">
             <p className="text-xs text-gray-400 mb-3">Admin only — this cannot be undone.</p>
             <button
-              onClick={deleteHandler}
+              onClick={() => deleteHandler()}
               className="w-full py-2.5 rounded-xl border border-gray-200 text-sm text-gray-400 font-medium hover:border-red-200 hover:text-red-500 hover:bg-red-50 transition-all"
             >
               Delete Group
