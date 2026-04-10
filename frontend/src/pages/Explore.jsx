@@ -20,6 +20,10 @@ const Explore = () => {
    navigate(`/group/${id}`)
   }
 
+  const filteredGroup = groups.filter(group => 
+    group.name.toLowerCase().includes(search.toLowerCase())
+  )
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
@@ -39,10 +43,10 @@ const Explore = () => {
 
         {/* Groups */}
         <div className="flex flex-col gap-3">
-          {groups.length === 0 ? (
+          {filteredGroup.length === 0 ? (
             <p className="text-sm text-gray-400">No groups found.</p>
           ) : (
-            groups.map((group) => (
+            filteredGroup.map((group) => (
               <div key={group._id} className="bg-white border border-gray-100 rounded-xl p-4 flex items-center justify-between hover:border-gray-200 transition-colors">
 
                 <div className="flex flex-col gap-1">
