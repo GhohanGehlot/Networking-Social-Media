@@ -87,29 +87,28 @@ export const leaveGroup = async (req , res , next) => {
 
         const group = await GroupModel.findById(groupId);
 
-        let members = group.members;
-
-        if(!group){
+         if(!group){
             return res.json({
                 success : false,
                 message: 'Group not found'
             })
         }
-
-        if(!members.includes(_id)){
+    
+        if(!group.members.includes(_id)){
             return res.json({
                 success : false,
                 message: 'User is not a member of group'
             })
         }
 
-        members.filter(memberId => memberId.toString() !== _id.toString());
+       group.members = group.members.filter(memberId => memberId.toString() !== _id.toString());
 
         await group.save();
         
         return res.json({
             success: true,
-            message : "User left the group"
+            message : "User left the group",
+            group
         })
 
     } catch (error) {

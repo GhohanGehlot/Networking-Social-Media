@@ -25,9 +25,16 @@ const useGroup = create((set) => ({
 
     joinGroup : async (id) => {
        const response = await axios.post(`/group/${id}/join`)
-       console.log("join" ,response.data);
         set((state) => ({
             groups : [ ...state.groups , response.data.group ]
+        }))
+    },
+
+    leaveGroup : async (id) => {
+        const response = await axios.post(`/group/${id}/leave`)
+        console.log("leave" ,response.data);
+        set((state) => ({
+            groups : state.groups.filter(group => group._id !== id)
         }))
     }
 

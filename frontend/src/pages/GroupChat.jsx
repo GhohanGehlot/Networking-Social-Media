@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Sidebar from '../components/SideBar'
 import { useEffect, useState } from 'react'
 import useGroup from '../store/useGroupStore';
@@ -9,6 +9,8 @@ const GroupChat = () => {
 
  const viewGroup = useGroup(state => state.viewGroup)
  const currentGroup = useGroup(state => state.currentGroup);
+ const leaveGroup = useGroup(state => state.leaveGroup);
+ const navigate = useNavigate();
  
 useEffect(() => {
     console.log('fetching group:', id)
@@ -23,6 +25,11 @@ useEffect(() => {
 
   const [message, setMessage] = useState('')
 
+
+  async function leaveGroupHandler() {
+    await leaveGroup(id)
+    navigate('/');
+  }
 
   if(!currentGroup) return <div>Loading...</div>
 
@@ -39,7 +46,7 @@ useEffect(() => {
             <h2 className="text-sm font-bold text-gray-900">{currentGroup.name}</h2>
             <p className="text-xs text-gray-400">{currentGroup.members.length}/{currentGroup.numberOfMembers} members</p>
           </div>
-          <button className="text-xs text-red-400 hover:text-red-600 font-medium">Leave</button>
+          <button onClick={() => leaveGroupHandler()} className="text-xs text-red-400 hover:text-red-600 font-medium">Leave</button>
         </div>
 
         {/* Messages */}

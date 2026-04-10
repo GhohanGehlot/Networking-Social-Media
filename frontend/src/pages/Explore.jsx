@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Sidebar from '../components/SideBar'
 import useGroup from '../store/useGroupStore'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const Explore = () => {
   const [search, setSearch] = useState('')
@@ -9,6 +9,7 @@ const Explore = () => {
   const groups = useGroup(state => state.exploreGroups);
   const exploreGroups = useGroup(state => state.exploreGroup);
   const joinGroup = useGroup(state => state.joinGroup);
+  const navigate = useNavigate();
 
   useEffect(() => {
     exploreGroups();
@@ -16,6 +17,7 @@ const Explore = () => {
 
   async function joinHandler (id){
    await joinGroup(id)
+   navigate(`/group/${id}`)
   }
 
   return (
