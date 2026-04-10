@@ -135,10 +135,7 @@ export const leaveGroup = async (req , res , next) => {
  } catch (error) {
     next(error);
  }
-
-    
-    
-    
+  
     
 }
 
@@ -177,6 +174,21 @@ export const MyGroup = async (req , res , next) => {
     next(error)
    }
 
+}
+
+
+export const exploreGroup = async (req , res , next) => {
+    try {
+        const groups = await GroupModel.find({ members : {$nin : [req.user._id]}})
+
+        res.json({
+            success : true,
+            message : "All groups fetched Successfully",
+            groups
+        })
+    } catch (error) {
+        next(error)
+    }
 }
 
 

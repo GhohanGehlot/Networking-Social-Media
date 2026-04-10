@@ -9,6 +9,7 @@ import PrivateRoutes from './components/PrivateRoutes'
 import PublicRoutes from './components/PublicRoutes'
 import { ToastContainer, toast } from 'react-toastify';
 import GroupChat from './pages/GroupChat'
+import Explore from './pages/Explore'
 
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
             <Route path='/' element={<MyGroup/>} />
             <Route path='/profile' element={<Profile/>} />    
             <Route path='/group/:id' element={<GroupChat/>}/> 
+            <Route path='/group/explore' element={<Explore/>}/> 
         </Route>
 
         <Route element={<PublicRoutes/>}>

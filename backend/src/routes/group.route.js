@@ -1,5 +1,5 @@
 import express from 'express';
-import { createGroup, DeleteGroup, joinGroup, leaveGroup, MyGroup, searchGroup, ViewGroup } from '../controllers/group.controller.js';
+import { createGroup, DeleteGroup, exploreGroup, joinGroup, leaveGroup, MyGroup, searchGroup, ViewGroup } from '../controllers/group.controller.js';
 import { hostVerification } from '../middlewares/host.middleware.js';
 import { authorisedUser } from '../middlewares/auth.middleware.js';
 
@@ -15,6 +15,7 @@ groupRoute.post('/:id/leave' , authorisedUser , leaveGroup);
 //GET request
 groupRoute.get('/search' , authorisedUser , searchGroup);
 groupRoute.get('/my-groups' , authorisedUser , MyGroup);
+groupRoute.get('/explore' , authorisedUser , exploreGroup);
 groupRoute.get('/:id' , authorisedUser , ViewGroup);
 
 

@@ -14,6 +14,8 @@ const Sidebar = () => {
   const navItems = [
     { label: 'My Groups', path: '/', icon: '⊞' },
     { label: 'Profile', path: '/profile', icon: '◯' },
+    { label: 'Explore', path: '/group/explore', icon: '' },
+
   ]
 
   return (
