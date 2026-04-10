@@ -1,6 +1,17 @@
+import { useEffect } from "react";
 import Sidebar from "../components/SideBar"
+import useAuth from "../store/useAuthStore"
 
 const Profile = () => {
+
+  const user = useAuth(state => state.user);
+  const fetchuser = useAuth(state => state.fetchUser);
+
+  useEffect(() => {
+    fetchuser();
+  },[])
+
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
@@ -18,12 +29,12 @@ const Profile = () => {
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-1">
               <span className="text-xs font-medium text-gray-400 tracking-wide">Full name</span>
-              <span className="text-sm font-medium text-gray-900">Ghohan</span>
+              <span className="text-sm font-medium text-gray-900">{user.username}</span>
             </div>
 
             <div className="flex flex-col gap-1">
               <span className="text-xs font-medium text-gray-400 tracking-wide">Email address</span>
-              <span className="text-sm font-medium text-gray-900">ghohan@example.com</span>
+              <span className="text-sm font-medium text-gray-900">{user.email}</span>
             </div>
 
             <div className="flex flex-col gap-1">

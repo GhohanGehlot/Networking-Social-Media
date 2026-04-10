@@ -38,6 +38,7 @@ const useAuth = create(persist((set) =>( {
         try {
             const response = await axios.get('/user/profile');
             if(!response.data.success) throw new Error(response.data.message);
+            console.log(response.data.user)
             set({
                 user : response.data.user , token : response.data.token , Loading : false
             })
