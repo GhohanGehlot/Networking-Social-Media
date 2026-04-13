@@ -86,7 +86,7 @@ const GroupDetail = () => {
                   </div>
                   <span className="text-sm text-gray-700">{member.username}</span>
                 </div>
-                {member._id === currentGroup.createdBy && (
+                {member._id === currentGroup.host._id && (
                   <span className="text-xs font-mono text-gray-400">admin</span>
                 )}
                 {member._id === authUser?._id && (

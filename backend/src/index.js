@@ -8,7 +8,6 @@ import connectDb from "./configs/dbConnect.js";
 import route from "./routes/index.js";
 
 
-
 export const app = express();
 
 connectDb();
@@ -19,7 +18,8 @@ connectDb();
 app.use(helmet());
 app.use(cors({
     origin: 'http://localhost:5173',
-    credentials: true
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
 }));
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
