@@ -14,7 +14,8 @@ const GroupDetail = () => {
   const authUser = useAuthStore(state => state.user)
 
   useEffect(() => {
-    viewGroup(id)
+    viewGroup(id);
+    
   }, [id])
 
   async function deleteHandler() {

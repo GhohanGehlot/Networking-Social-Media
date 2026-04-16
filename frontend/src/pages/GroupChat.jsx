@@ -2,28 +2,75 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Sidebar from '../components/SideBar'
 import { useEffect, useState } from 'react'
 import useGroup from '../store/useGroupStore';
+import useMessage from '../store/useMessage';
+import socket from '../socket';
+import useAuth from '../store/useAuthStore';
+import { useRef } from 'react';
 
 const GroupChat = () => {
 
  const { id } = useParams();
 
+ const [message, setMessage] = useState('')
+
  const viewGroup = useGroup(state => state.viewGroup)
  const currentGroup = useGroup(state => state.currentGroup);
  const leaveGroup = useGroup(state => state.leaveGroup);
+ const messages = useMessage(state => state.messages);
+ const getMessages = useMessage(state => state.getMessages)
+ const addMessage = useMessage(state => state.addMessage);
+ const authUser = useAuth(state => state.user);
+
  const navigate = useNavigate();
+ const bottomRef = useRef(null)
  
 useEffect(() => {
-    console.log('fetching group:', id)
-    viewGroup(id)
-}, [])
+    viewGroup(id);
+    getMessages(id);
 
-  const messages = [
-    { id: 1, sender: 'Ghohan', text: 'Hey everyone!', time: '9:41 AM', isMe: true },
-    { id: 2, sender: 'John', text: 'Whats up', time: '9:42 AM', isMe: false },
-    { id: 3, sender: 'Ghohan', text: 'Anyone read Zero to One?', time: '9:43 AM', isMe: true },
-  ]
+    socket.connect();
+    socket.emit("join-room" , id);
 
-  const [message, setMessage] = useState('')
+    socket.on("receive-message" , (newMessage) => {
+     if (newMessage.sender._id !== authUser._id) {
+      addMessage(newMessage);
+  }
+    })
+
+
+    return () => {
+      socket.off("recieve-message");
+      socket.disconnect()
+    }
+}, [id])
+
+useEffect(() => {
+  bottomRef.current?.scrollIntoView({ behavior: "smooth"})
+},[messages])
+
+function sendHandler(){
+  if(!message.trim()) return;
+
+  const newMsg = {
+    message,
+    sender: {
+      _id: authUser._id,
+      username: authUser.username
+    },
+    createdAt: new Date().toISOString()
+  }
+
+  addMessage(newMsg);
+
+  socket.emit("send-message" , {
+    groupId : id,
+    message,
+    sender : authUser?._id
+  })
+
+  setMessage("")
+}
+
 
 
   async function leaveGroupHandler() {
@@ -54,15 +101,23 @@ useEffect(() => {
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-3">
-          {messages.map((msg) => (
-            <div key={msg.id} className={`flex flex-col gap-1 ${msg.isMe ? 'items-end' : 'items-start'}`}>
-              {!msg.isMe && <span className="text-xs text-gray-400 px-1">{msg.sender}</span>}
-              <div className={`px-4 py-2 rounded-2xl text-sm max-w-xs ${msg.isMe ? 'bg-gray-900 text-white rounded-tr-sm' : 'bg-white border border-gray-100 text-gray-900 rounded-tl-sm'}`}>
-                {msg.text}
+          {messages.map((msg, index) => {
+            const isMe = msg.sender._id === authUser._id;
+           return (<div key={index} className={`flex flex-col gap-1 ${isMe ? 'items-end' : 'items-start'}`}>
+              {!isMe && <span className="text-xs text-gray-400 px-1">{msg.sender.username}</span>}
+              <div className={`px-4 py-2 rounded-2xl text-sm max-w-xs ${isMe ? 'bg-gray-900 text-white rounded-tr-sm' : 'bg-white border border-gray-100 text-gray-900 rounded-tl-sm'}`}>
+                {msg.message}
               </div>
-              <span className="text-xs text-gray-300 px-1">{msg.time}</span>
-            </div>
-          ))}
+              <span className="text-xs text-gray-300 px-1">
+                {new Date(msg.createdAt).toLocaleTimeString([], {
+                     hour: "2-digit",
+                     minute: "2-digit"
+                   })}
+              </span>
+            </div>)
+          })}
+
+            <div ref={bottomRef}></div>
         </div>
 
         {/* Input */}
@@ -71,10 +126,11 @@ useEffect(() => {
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && sendHandler()}
             placeholder="Type a message..."
             className="flex-1 h-10 px-4 rounded-xl border border-gray-200 bg-gray-50 text-sm outline-none focus:border-gray-400"
           />
-          <button className="h-10 px-4 bg-gray-900 text-white text-sm font-medium rounded-xl">
+          <button onClick={sendHandler} className="h-10 px-4 bg-gray-900 text-white text-sm font-medium rounded-xl">
             Send
           </button>
         </div>
